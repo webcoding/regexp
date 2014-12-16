@@ -4,179 +4,37 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Regulex：JavaScript Regular Expression Visualizer.</title>
 <style>
-body,html * {
-margin:0;
-padding:0;
-font-family:sans-serif;
-}
-body {
-background: #303030;
-}
-.code,.code * {
-  font-family: "DejaVu Sans Mono",monospace;
-}
-h1 {
-font-size:3em;
-color:#40C0FF;
-margin:14px 0;
-padding:0 16px;
-padding-top:40px;
-padding-bottom: 20px;
-border-bottom:2px dashed grey;
-min-height:60px;
-}
-h1 em{
-color:#BBE0E0;
-font-size:small;
-padding-left:2em;
-font-style: normal;
-font-weight:normal;
-display:inline-block;
-}
-#inputCt,#errorBox {
-margin:8px 16px;
-}
-#inputCt div.re {
-background:#EEE;
-font-size:1.2em;
-line-height: 1.4em;
-color:#333;
-border:1px solid black;
-padding:4px;
-font-weight: bold;
-word-break:break-all;
-word-wrap:break-word;
-}
-#inputCt div.re table {
-border:none;
-padding:0;
-margin:0;
-width:100%;
-}
-#inputCt div.re .input {
-color:#3030C0;
-padding:0 2px;
-border:none;
-background:#EEE;
-font-size:1.2em;
-line-height: 1.4em;
-height:1.4em;
-font-weight: bold;
-word-break:break-all;
-word-wrap:break-word;
-margin:0;
-width:auto;
-}
-#inputCt div.re #input {
-display:table;
-width:100%;
-}
-#inputCt label {
-  color:white;
-  cursor:pointer;
-  display:inline-block;
-}
-#inputCt label input {
-  margin-right:4px;
-}
-#errorBox {
-background:#EEE;
-font-size:1.2em;
-line-height: 1.4em;
-border:1px solid black;
-padding:4px;
-color:darkred;
-white-space: pre;
-word-wrap:normal;
-word-break:keep-all;
-display: none;
-overflow:auto;
-}
-#visualIt,#embedIt,#exportIt {
-font-size: 16px;
-line-height: 16px;
-display: inline-block;
-margin: 10px;
-margin-left:0;
-padding:12px;
-padding-bottom:10px;
-color:#EEF;
-border:none;
-cursor:pointer;
-background: #40B0EF;
-background-image: linear-gradient(to bottom, #40B0EF,#3060A0);
-border-radius: 12px;
-text-decoration: none;
-}
-#visualIt:hover,#embedIt:hover,#exportIt:hover {
-color:#FEF;
-background: #3CB0FD;
-background-image: linear-gradient(to bottom, #3CB0FD, #3498DF);
-text-decoration: none;
-}
-#graphCt {
-padding:4px;
-margin:0px 16px;
-border:1px solid black;
-background: #EEE;
-overflow: auto;
-cursor:move;
--webkit-touch-callout: none;
--webkit-user-select: none;
--khtml-user-select: none;
--moz-user-select: none;
--ms-user-select: none;
-user-select: none;
-}
-#graphCt svg {
-display:block;
-margin:0 auto;
-}
-footer {
-text-align: center;
-border-top:1px solid grey;
-margin:1em auto;
-padding:10px;
-font-size:1.2em;
-}
-footer,footer a {
-color:#EEF;
-}
-body.embed {
-  background: #EEE;
-}
-body.embed,body.embed #graphCt {
-  margin:0;
-  padding:0;
-  border:none;
-}
-body.embed h1,
-body.embed #inputCt,
-body.embed #github {
-  display:none !important;
-}
-body.embed footer {
-  display:none;
-}
-body.embed div.footer,body.embed div.footer a {
-  color:white;
-  font-size: 14px;
-}
-body.embed div.footer {
-  display:block;
-  width:auto;
-  margin:0;
-  padding:2px 10px;
-  background:rgb(75,0,130);
-  opacity: 0.9;
-  position:fixed;
-  right:0;
-  bottom:0;
-}
+body,html * {margin:0;padding:0;font-family:sans-serif;}
+body {background: #303030;min-width: 700px;}
+.code,.code * {font-family: "DejaVu Sans Mono",monospace;}
+.header{margin:14px 0;padding:0 16px;padding-top:40px;padding-bottom: 20px;border-bottom:2px dashed grey;min-height:60px;}
+.header h1 {font-size:3em;color:#40C0FF;}
+.header h1 em{color:#BBE0E0;font-size:small;padding-left:2em;font-style: normal;font-weight:normal;display:inline-block;}
+#inputCt,#errorBox {margin:8px 16px;}
+#inputCt div.re {background:#EEE;font-size:1.2em;line-height: 1.4em;color:#333;border:1px solid black;padding:4px;font-weight: bold;word-break:break-all;word-wrap:break-word;}
+#inputCt div.re table {border:none;padding:0;margin:0;width:100%;}
+#inputCt div.re .input {color:#3030C0;padding:0 2px;border:none;background:#EEE;font-size:1.2em;line-height: 1.4em;height:1.4em;font-weight: bold;word-break:break-all;word-wrap:break-word;margin:0;width:auto;}
+#inputCt div.re #input {display:table;width:100%;}
+#inputCt label {color:white;cursor:pointer;display:inline-block;}
+#inputCt label input {margin-right:4px;}
+#errorBox {background:#EEE;font-size:1.2em;line-height: 1.4em;border:1px solid black;padding:4px;color:darkred;white-space: pre;word-wrap:normal;word-break:keep-all;display: none;overflow:auto;}
+#visualIt,#embedIt,#exportIt {font-size: 16px;line-height: 16px;display: inline-block;margin: 10px;margin-left:0;padding:12px;padding-bottom:10px;color:#EEF;border:none;cursor:pointer;background: #40B0EF;background-image: linear-gradient(to bottom, #40B0EF,#3060A0);border-radius: 12px;text-decoration: none;}
+#visualIt:hover,#embedIt:hover,#exportIt:hover {color:#FEF;background: #3CB0FD;background-image: linear-gradient(to bottom, #3CB0FD, #3498DF);text-decoration: none;}
+#graphCt {padding:4px;margin:0px 16px;border:1px solid black;background: #EEE;overflow: auto;cursor:move;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;-ms-user-select: none;user-select: none;}
+#graphCt svg {display:block;margin:0 auto;}
+footer {text-align: center;border-top:1px solid grey;margin:1em auto;padding:10px;font-size:1.2em;}
+footer,footer a {color:#EEF;}
+body.embed {background: #EEE;}
+body.embed,body.embed #graphCt {margin:0;padding:0;border:none;}
+body.embed h1,body.embed #inputCt,body.embed #github {display:none !important;}
+body.embed footer {display:none;}
+body.embed div.footer,body.embed div.footer a {color:white;font-size: 14px;}
+body.embed div.footer {display:block;width:auto;margin:0;padding:2px 10px;background:rgb(75,0,130);opacity: 0.9;position:fixed;right:0;bottom:0;}
 body.embed{height:100%;}
-body.embed #graphCt {
-  height: 100vh;
-}
+body.embed #graphCt {height: 100px;}
+#testReg{border:1px solid #ddd;padding:3px 5px;height:30px;font-size:16px;width:400px;float:right;margin-top:-80px;opacity: 0.9;}
+#testReg:focus{outline: none;}
+
 </style>
 </head>
 <body>
@@ -208,7 +66,10 @@ function getParams() {
   return params;
 }
 </script>
-<h1>Regulex <em>JavaScript Regular Expression Visualizer.</em></h1>
+<div class="header">
+  <h1>Regulex <em>JavaScript Regular Expression Visualizer.</em></h1>
+  <input id="testReg" type="text" placeholder="测验框，可以进行数据测试">
+</div>
 <div id="inputCt">
     <div class="re code">
       <table>
@@ -230,7 +91,7 @@ function getParams() {
     <label><input type="checkbox" name="flag" value="g" />GlobalMatch</label>
 </div>
 <p id="errorBox" class="code">Error Message</p>
-<div id="graphCt" class="code"></div>
+<div id="graphCt" class="code" style="position:relative;"><a id="github" href="https://github.com/JexCheng/regulex" target="_blank" style="display:inline-block;width:149px;height:149px;position: absolute; top: 0; right: 0; border: 0;"><img style="width:149px;height:149px;position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a></div>
 
 <!--script src="http://cdn.staticfile.org/require.js/2.1.15/require.min.js"></script-->
 <!--script src="http://libs.useso.com/js/require.js/2.1.11/require.min.js"></script-->
@@ -487,9 +348,35 @@ function clearSelect() {
     document.selection.empty();
   }
 }
+
 }
 </script>
+<script>
+(function(){
+  //测验框
+  var testInput = document.getElementById('testReg');
+  var regInput = document.getElementById('input');
+  testInput.onkeyup = testFn;
+  regInput.onkeyup = testFn;
 
+  function testFn(){
+    var regText = regInput.value;
+    var reg = new RegExp(regText);
+    if(testInput.value){
+      if(reg.test(testInput.value)){
+        testInput.style.background = '#00CC00'
+        testInput.style.color = '#fff'
+      }else{
+        testInput.style.background = '#990000'
+        testInput.style.color = '#fff'
+      }
+    }else{
+      testInput.style.background = ''
+    }
+  }
+  
+})();
+</script>
 
 <footer>Created by <a href="http://jex.im/" target="_blank">Jex</a>.</footer>
 <script>
@@ -497,6 +384,5 @@ if (params.embed) {
   document.write('<div class="footer"><a href="'+location.href+'&embed=false" target="_blank">Generated by Regulex.</a></div>');
 }
 </script>
-<a id="github" href="https://github.com/JexCheng/regulex" target="_blank" style="display:inline-block;width:149px;height:149px;position: absolute; top: 0; right: 0; border: 0;"><img style="width:149px;height:149px;position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>
 </html>
