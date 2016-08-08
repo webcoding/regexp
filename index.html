@@ -76,7 +76,7 @@ function getParams() {
         <tr>
           <td style="width:1em">/</td>
           <td style="width:auto">
-            <input id="input" class="input" value="(a|b\d+)*c" />
+            <input id="input" class="input" value="^(a|b)*?$" />
           </td>
           <td style="width:1em">/</td>
           <td style="width:3em" id="flagBox"></td>
@@ -139,7 +139,7 @@ var errorBox=$('errorBox');
 var flags=document.getElementsByName('flag');
 var flagBox=$('flagBox');
 var getInputValue=function () {
-    return input.value=trim(input.value);
+    return trim(input.value);
 };
 var setInputValue=function (v) {
   return input.value=trim(v);
@@ -158,16 +158,17 @@ dragGraph($('graphCt'));
 
 visualIt();
 
-function visualIt() {
+function visualIt(skipError) {
   var re=getInputValue();
-  if (!re) return false;
   changeHash();
   hideError();
   var ret;
   try {ret=parse(re)}
   catch (e) {
     if (e instanceof parse.RegexSyntaxError) {
-      showError(re,e);
+      if (!skipError) {
+        showError(re,e);
+      }
     } else throw e;
     return false;
   }
@@ -197,6 +198,18 @@ function changeHash() {
 function initListeners() {
   var LF='\n'.charCodeAt(0),CR='\r'.charCodeAt(0);
   input.addEventListener('keydown',onEnter);
+  input.addEventListener('keyup',onKeyup);
+  input.addEventListener('paste',function (evt) {
+    var content=trim(evt.clipboardData.getData('text'));
+    if (content[0]==='/' && /\/[img]*$/.test(content)) {
+      evt.preventDefault();
+      var endIndex=content.lastIndexOf('/');
+      setFlags(content.slice(endIndex+1));
+      content=content.slice(1,endIndex);
+      setInputValue(content);
+    }
+    setTimeout(visualIt,50);
+  });
   visualBtn.addEventListener('click',function () {
     visualIt();
   });
@@ -207,7 +220,7 @@ function initListeners() {
     src=i>0?src.slice(0,i):src;
     changeHash();
     var re=getInputValue();
-    var html='<iframe src="'+src+'#!embed=true&flags='+getFlags()+'&re='+encodeURIComponent(re)+'"></iframe>'
+    var html='<iframe frameborder="0" width="'+Math.ceil(paper.width)+'" height="'+Math.ceil(paper.height)+'" src="'+src+'#!embed=true&flags='+getFlags()+'&re='+encodeURIComponent(re)+'"></iframe>'
     window.prompt("Copy the html code:",html);
   });
 
@@ -235,12 +248,25 @@ function initListeners() {
     visualIt();
     changeHash();
   }
+
+
+  var onKeyupTid;
+  function onKeyup(e) {
+    if (e.keyCode===LF || e.keyCode===CR) {
+      return true;
+    }
+    clearTimeout(onKeyupTid);
+    onKeyupTid=setTimeout(function () {
+      var skipError=true;
+      visualIt(skipError);
+    },100);
+  }
   function onEnter(e) {
     if (e.keyCode===LF || e.keyCode===CR) {
       e.preventDefault();
       e.stopPropagation();
-    } else return;
-    visualIt();
+      visualIt();
+    }
   }
 }
 

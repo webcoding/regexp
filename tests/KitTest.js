@@ -28,6 +28,10 @@ function testCoalesce() {
   ranges=K.classify(K.negate(['Aa','az'])).ranges;
   results=K.coalesce(ranges);
   assert.deepEqual(results,K.negate(['Az']));
+
+  ranges=K.classify(['ab','cd','xy']).ranges;
+  results=K.coalesce(ranges);
+  assert.deepEqual(results,['ad','x','y']);
 }
 
 function testIdUnique() {
@@ -134,6 +138,10 @@ function testClassify() {
   ret=classify(a);
   assert.deepEqual(ret.ranges,['ab','ch','iz']);
 
+  a="(){}[]\\#\"'; \n\t\r\f".split("").concat("\0\uFFFF");
+  ret=classify(a);
+  assert.equal(ret.map["\0\uFFFF"].length,ret.ranges.length);
+
 
   a=negate(['by','28']);
   assert.deepEqual(a,["\u00001","9a","z\uffff"])
@@ -146,7 +154,9 @@ function testClassify() {
   assert.deepEqual(negate(["\u0000\uffff"]),[]);
 
   a=negate(['cx','by']);
-  assert.deepEqual(a,["\u0000a","z\uffff"])
+  assert.deepEqual(a,["\u0000a","z\uffff"]);
+
+
 }
 
 function testParseCharset() {

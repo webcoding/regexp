@@ -313,10 +313,19 @@ function _fixNodes(stack,re,endIndex) {
 
 function _checkRepeat(node) {
   if (node.repeat) {
+    var astype = node.assertionType;
+    var msg = 'Nothing to repeat! Repeat after assertion doesn\'t make sense!';
+    if (astype === 'AssertLookahead'  || astype === 'AssertNegativeLookahead' ) {
+      var assertifier = astype === 'AssertLookahead' ? '?=' : '?!';
+      var pattern = '('+assertifier+'b)';
+      msg += '\n/a'+pattern+'+/、/a'+pattern+'{1,n}/ are the same as /a'+pattern+'/。\n' +
+              '/a'+pattern+'*/、/a'+pattern+'{0,n}/、/a'+pattern+'?/ are the same as /a/。';
+    }
+
     throw new RegexSyntaxError({
       type:'NothingRepeat',
-      lastIndex:node.indices[1],
-      message:'Nothing to repeat!Repeat after assertion doesn\'t make sense!'
+      lastIndex:node.indices[1]-1,
+      message: msg
     })
   }
 }
@@ -498,7 +507,7 @@ var actions=(function _() {
     stack.groupCounter=counter; //keep groupCounter persist and ref modifiable
     return stack;
   }
-  function groupNonCapture(stack) { // /(?:)/\
+  function groupNonCapture(stack) { // /(?:)/
     var group=stack._parentGroup
     group.nonCapture=true;
     group.num=undefined;
@@ -834,7 +843,7 @@ var config={
     ['groupQualify>groupQualifiedStart',':',actions.groupNonCapture],//group non-capturing
     ['groupQualify>groupQualifiedStart','=',actions.groupToAssertion],//group positive lookahead
     ['groupQualify>groupQualifiedStart','!',actions.groupToAssertion],//group negative lookahead
-    [(repeatnStates+',nullChar,digitBackref,'+unicodeEscapeStates+','+hexEscapeStates)+'groupStart,groupQualifiedStart,begin,end,exact,repeat1,repeat0,repeat01,repeatn,repeatNonGreedy,choice>exact',')',actions.groupEnd],//group end
+    [(repeatnStates+',nullChar,digitBackref,'+unicodeEscapeStates+','+hexEscapeStates)+',groupStart,groupQualifiedStart,begin,end,exact,repeat1,repeat0,repeat01,repeatn,repeatNonGreedy,choice>exact',')',actions.groupEnd],//group end
 
     //choice
     ['start,begin,end,groupStart,groupQualifiedStart,exact,repeat0,repeat1,repeat01,repeatn,repeatNonGreedy,choice,'+(repeatnStates+',nullChar,digitBackref,'+unicodeEscapeStates+','+hexEscapeStates)+'>choice','|', actions.choice],
