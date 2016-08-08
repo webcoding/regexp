@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta charset="utf-8">
 <title>Regulex：JavaScript Regular Expression Visualizer.</title>
 <style>
 body,html * {margin:0;padding:0;font-family:sans-serif;}
@@ -31,10 +31,9 @@ body.embed footer {display:none;}
 body.embed div.footer,body.embed div.footer a {color:white;font-size: 14px;}
 body.embed div.footer {display:block;width:auto;margin:0;padding:2px 10px;background:rgb(75,0,130);opacity: 0.9;position:fixed;right:0;bottom:0;}
 body.embed{height:100%;}
-body.embed #graphCt {height: 100px;}
+body.embed #graphCt {height: 100vh;}
 #testReg{border:1px solid #ddd;padding:3px 5px;height:30px;font-size:16px;width:400px;float:right;margin-top:-80px;opacity: 0.9;}
 #testReg:focus{outline: none;}
-
 </style>
 </head>
 <body>
@@ -97,7 +96,7 @@ function getParams() {
 <!--script src="http://libs.useso.com/js/require.js/2.1.11/require.min.js"></script-->
 
 <script type="text/javascript" charset="utf-8">
-params.debug=false;
+params.debug=true;
 /*
 //var raphael="http://cdn.staticfile.org/raphael/2.1.2/raphael-min.js";
 var raphael="http://libs.useso.com/js/raphael/2.1.2/raphael-min.js";
@@ -139,7 +138,7 @@ var errorBox=$('errorBox');
 var flags=document.getElementsByName('flag');
 var flagBox=$('flagBox');
 var getInputValue=function () {
-    return trim(input.value);
+    return input.value=trim(input.value);
 };
 var setInputValue=function (v) {
   return input.value=trim(v);
@@ -393,14 +392,14 @@ function clearSelect() {
         testInput.style.background = '#00CC00'
         testInput.style.color = '#fff'
       }else{
-        testInput.style.background = '#990000'
+        testInput.style.background = '#FC0505'
         testInput.style.color = '#fff'
       }
     }else{
       testInput.style.background = ''
     }
   }
-  
+
 })();
 </script>
 
